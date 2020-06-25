@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
@@ -34,14 +34,21 @@ const App = () => {
         <button onClick={() => setBad(bad + 1)}>bad</button>
       </div>
       <h2>statistics</h2>
-      <p>good <span>{good}</span></p>
-      <p>neutral <span>{neutral}</span></p>
-      <p>bad <span>{bad}</span></p>
-      <p>all {getTotal()}</p>
-      <Statistics 
-        getAverage={getAverage} 
-        getPositiveRate={getPositiveRate}
-      />
+        {
+          (good === 0 && neutral === 0 && bad === 0 ) ?
+          <p>No feedback given</p> : (
+            <section className="stat">
+              <p>good <span>{good}</span></p>
+              <p>neutral <span>{neutral}</span></p>
+              <p>bad <span>{bad}</span></p>
+              <p>all {getTotal()}</p>
+              <Statistics 
+                getAverage={getAverage} 
+                getPositiveRate={getPositiveRate}
+              />
+            </section>
+          )
+        }
     </div>
   )
 }
