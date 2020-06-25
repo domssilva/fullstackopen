@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import ReactDOM from 'react-dom';
 
 import './index.css';
 
 const App = props => {
+  const [mostVoted, setMostVoted] = useState(0)
   const [selected, setSelected] = useState(0)
   const [anecdotes, setAnecdotes] = useState([
     {
@@ -46,19 +47,41 @@ const App = props => {
     setAnecdotes(newArray)
   }
 
+  function biggestNumberInArray(arr) {
+    const max = Math.max(...arr);
+    return max;
+  }
+
+  useEffect(() => {
+    let allVotes = anecdotes.map(obj => obj.votes)
+    let biggestNumIdx = 0 
+    
+    setMostVoted(
+      allVotes.indexOf(biggestNumberInArray(allVotes))
+    )
+  }, [anecdotes])
+
   return (
     <div>
-      <p style={{
-        minHeight: '85px',
-      }}>
-        {anecdotes[selected].text}
-      </p>
-      <p>has {anecdotes[selected].votes} votes</p>
-      <button onClick={voteAnecdote}>vote</button>
-      <button 
-        onClick={nextAnecdote}>
-        next anecdote
-      </button>
+      <section>
+        <h2>Anecdote of the day</h2>
+        <p style={{
+          minHeight: '85px',
+        }}>
+          {anecdotes[selected].text}
+        </p>
+        <p>has {anecdotes[selected].votes} votes</p>
+        <button onClick={voteAnecdote}>vote</button>
+        <button 
+          onClick={nextAnecdote}>
+          next anecdote
+        </button>
+      </section>
+      <h2>Anecdote with most votes</h2>
+      <div>
+        <p>{anecdotes[mostVoted].text}</p>
+        <p>has {anecdotes[mostVoted].votes} votes</p>
+      </div>
     </div>
   )
 }
