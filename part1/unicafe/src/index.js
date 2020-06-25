@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
+
 import './index.css';
 
 const Button = props => (
@@ -7,7 +8,10 @@ const Button = props => (
 )
 
 const Statistics = props => (
-<p>{props.text} {props.value} {(props.text === 'positive') ? '%' : ''}</p>
+  <tr>
+    <td>{props.text}</td> 
+    <td>{props.value} {(props.text === 'positive') ? '%' : ''}</td>
+  </tr>
 )
 
 const App = () => {
@@ -45,14 +49,16 @@ const App = () => {
         {
           (good === 0 && neutral === 0 && bad === 0 ) ?
           <p>No feedback given</p> : (
-            <>
-              <Statistics text='good' value={good}/>
-              <Statistics text='neutral' value={neutral}/>
-              <Statistics text='bad' value={bad}/>
-              <Statistics text='all' value={getTotal()}/>
-              <Statistics text='average' value={getAverage()}/>
-              <Statistics text='positive' value={getPositiveRate()}/>
-            </>
+            <table>
+              <tbody>
+                <Statistics text='good' value={good}/>
+                <Statistics text='neutral' value={neutral}/>
+                <Statistics text='bad' value={bad}/>
+                <Statistics text='all' value={getTotal()}/>
+                <Statistics text='average' value={getAverage()}/>
+                <Statistics text='positive' value={getPositiveRate()}/>
+              </tbody>
+            </table>
           )
         }
       </section>
