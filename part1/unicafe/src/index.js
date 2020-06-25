@@ -2,6 +2,19 @@ import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
+const Statistics = props => (
+  <>
+  {
+    !isNaN(props.getAverage()) ?
+    <p>average {props.getAverage()}</p> : ''
+  }
+  {
+    !isNaN(props.getPositiveRate()) ?
+    <p>positive {props.getPositiveRate()} %</p> : ''
+  }
+  </>
+)
+
 const App = () => {
 
   const [good, setGood] = useState(0)
@@ -25,14 +38,10 @@ const App = () => {
       <p>neutral <span>{neutral}</span></p>
       <p>bad <span>{bad}</span></p>
       <p>all {getTotal()}</p>
-      {
-        !isNaN(getAverage()) ?
-        <p>average {getAverage()}</p> : ''
-      }
-      {
-        !isNaN(getPositiveRate()) ?
-        <p>positive {getPositiveRate()} %</p> : ''
-      }
+      <Statistics 
+        getAverage={getAverage} 
+        getPositiveRate={getPositiveRate}
+      />
     </div>
   )
 }
