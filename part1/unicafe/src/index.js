@@ -1,18 +1,13 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
+const Button = props => (
+  <button onClick={() => props.setStat(props.stat + 1)}>{props.text}</button>
+)
+
 const Statistics = props => (
-  <>
-  {
-    !isNaN(props.getAverage()) ?
-    <p>average {props.getAverage()}</p> : ''
-  }
-  {
-    !isNaN(props.getPositiveRate()) ?
-    <p>positive {props.getPositiveRate()} %</p> : ''
-  }
-  </>
+<p>{props.text} {props.value} {(props.text === 'positive') ? '%' : ''}</p>
 )
 
 const App = () => {
@@ -29,33 +24,43 @@ const App = () => {
     <div>
       <h1>feedback</h1>
       <div className="buttons">
-        <button onClick={() => setGood(good + 1)}>good</button>
-        <button onClick={() => setNeutral(neutral + 1)}>neutral</button>
-        <button onClick={() => setBad(bad + 1)}>bad</button>
+        <Button
+          text='good'
+          stat={good}
+          setStat={setGood}
+        />
+        <Button
+          text='neutral'
+          stat={neutral}
+          setStat={setNeutral}
+        />
+        <Button
+          text='bad'
+          stat={bad}
+          setStat={setBad}
+        />
       </div>
-      <h2>statistics</h2>
+      <section className="statistics">
+        <h2>statistics</h2>
         {
           (good === 0 && neutral === 0 && bad === 0 ) ?
           <p>No feedback given</p> : (
-            <section className="stat">
-              <p>good <span>{good}</span></p>
-              <p>neutral <span>{neutral}</span></p>
-              <p>bad <span>{bad}</span></p>
-              <p>all {getTotal()}</p>
-              <Statistics 
-                getAverage={getAverage} 
-                getPositiveRate={getPositiveRate}
-              />
-            </section>
+            <>
+              <Statistics text='good' value={good}/>
+              <Statistics text='neutral' value={neutral}/>
+              <Statistics text='bad' value={bad}/>
+              <Statistics text='all' value={getTotal()}/>
+              <Statistics text='average' value={getAverage()}/>
+              <Statistics text='positive' value={getPositiveRate()}/>
+            </>
           )
         }
+      </section>
     </div>
   )
 }
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <App />,
   document.getElementById('root')
 );
