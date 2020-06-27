@@ -9,19 +9,33 @@ const App = () => {
   ])
 
   const handleInputChange = (event) => {
-    setNewName(event.target.value)
+    const nameToAdd = event.target.value
+    setNewName(nameToAdd)
+
   }
 
   const addName = (event) => {
     // prevent default event (page reload)
     event.preventDefault()
 
-    // push new name to persons
-    setPersons(
-      persons.concat({
-        name: newName
-      })
-    )
+    // check if name is present
+    let nameIsRepeated = false
+    persons.filter(obj => {
+      if (obj.name === newName) {
+        nameIsRepeated = true
+      }
+    })
+
+    if (nameIsRepeated) {
+      alert(`${newName} is already added to phonebook`)
+    } else {
+      // push new name to persons
+      setPersons(
+        persons.concat({
+          name: newName
+        })
+      )
+    }
 
     // update input value
     setNewName('')
