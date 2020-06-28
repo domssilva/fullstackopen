@@ -2,19 +2,26 @@ import React, {useState} from 'react';
 
 const App = () => {
 
-  // for controlling the form input
   const [newName, setNewName] = useState('')
+  const [newNumber, setNewNumber] = useState('')
   const [persons, setPersons] = useState([
-    {name: 'Arto Hellas'}
+    {
+      name: 'Arto Hellas',
+      number: '39-44-5432'
+    }
   ])
 
-  const handleInputChange = (event) => {
+  const handleInputNameChange = (event) => {
     const nameToAdd = event.target.value
     setNewName(nameToAdd)
-
   }
 
-  const addName = (event) => {
+  const handleInputNumberChange = (event) => {
+    const numberToAdd = event.target.value
+    setNewNumber(numberToAdd)
+  }
+
+  const addPerson = (event) => {
     // prevent default event (page reload)
     event.preventDefault()
 
@@ -32,7 +39,8 @@ const App = () => {
       // push new name to persons
       setPersons(
         persons.concat({
-          name: newName
+          name: newName,
+          number: newNumber,
         })
       )
     }
@@ -46,10 +54,13 @@ const App = () => {
       <h2>Phonebook</h2>
       <form>
         <div>
-          name: <input value={newName} onChange={handleInputChange}/>
+          name: <input value={newName} onChange={handleInputNameChange}/>
         </div>
         <div>
-          <button type="submit" onClick={addName}>
+          number: <input value={newNumber} onChange={handleInputNumberChange}/>
+        </div>
+        <div>
+          <button type="submit" onClick={addPerson}>
             add
           </button>
         </div>
@@ -57,7 +68,11 @@ const App = () => {
       <h2>Numbers</h2>
         {
           persons.map(
-            ({name}) => <p key={name}>{name}</p>
+            ({name, number}) => (
+              <p key={name}>
+                <span>{name}</span> <span>{number}</span>
+              </p>
+            )
           )
         }
     </div>
