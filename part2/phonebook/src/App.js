@@ -1,4 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
+
+import Filter from './components/Filter'
+import PersonForm from './components/PersonForm'
+import Persons from './components/Persons'
 
 const App = () => {
 
@@ -48,58 +52,29 @@ const App = () => {
 
     // update input value
     setNewName('')
+    setNewNumber('')
   }
 
   const handleInputFilterChange = (event) => {
     setFilterSearch(event.target.value)
   }
 
-  // useEffect(() => {
-  //   if (filterSearch !== '') {
-  //     console.log(
-  //       persons.filter(obj => obj.name.toLowerCase().includes(filterSearch.toLowerCase()))
-  //     )
-  //   }
-  // }, [filterSearch])
-
   let filtered = persons.filter(obj => obj.name.toLowerCase().includes(filterSearch.toLowerCase()))
-  console.log(filtered)
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-        filter shown with <input value={filterSearch} onChange={handleInputFilterChange}/>
-      </div>
+        <Filter filterSearch={filterSearch} handleInputFilterChange={handleInputFilterChange}/>
       <h2>Add a new</h2>
-      <form>
-        <div>
-          name: <input value={newName} onChange={handleInputNameChange}/>
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={handleInputNumberChange}/>
-        </div>
-        <div>
-          <button type="submit" onClick={addPerson}>
-            add
-          </button>
-        </div>
-      </form>
+      <PersonForm
+        newName={newName}
+        handleInputNameChange={handleInputNameChange}
+        newNumber={newNumber}
+        handleInputNumberChange={handleInputNumberChange}
+        addPerson={addPerson}
+      />
       <h2>Numbers</h2>
-        {/* {
-          persons.map(
-            ({name, number}) => (
-              <p key={name}>
-                <span>{name}</span> <span>{number}</span>
-              </p>
-            )
-          )
-        } */}
-        {
-          filtered.map(({name, number}) => <p key={name}>
-            <span>{name}</span> <span>{number}</span>
-          </p>)
-        }
+        <Persons filtered={filtered}/>
     </div>
   )
 }
