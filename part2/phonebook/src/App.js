@@ -1,15 +1,16 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 
 const App = () => {
 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [persons, setPersons] = useState([
-    {
-      name: 'Arto Hellas',
-      number: '39-44-5432'
-    }
+    { name: 'Arto Hellas', number: '040-123456' },
+    { name: 'Ada Lovelace', number: '39-44-5323523' },
+    { name: 'Dan Abramov', number: '12-43-234345' },
+    { name: 'Mary Poppendieck', number: '39-23-6423122' }
   ])
+  const [filterSearch, setFilterSearch] = useState('')
 
   const handleInputNameChange = (event) => {
     const nameToAdd = event.target.value
@@ -49,9 +50,28 @@ const App = () => {
     setNewName('')
   }
 
+  const handleInputFilterChange = (event) => {
+    setFilterSearch(event.target.value)
+  }
+
+  // useEffect(() => {
+  //   if (filterSearch !== '') {
+  //     console.log(
+  //       persons.filter(obj => obj.name.toLowerCase().includes(filterSearch.toLowerCase()))
+  //     )
+  //   }
+  // }, [filterSearch])
+
+  let filtered = persons.filter(obj => obj.name.toLowerCase().includes(filterSearch.toLowerCase()))
+  console.log(filtered)
+
   return (
     <div>
       <h2>Phonebook</h2>
+      <div>
+        filter shown with <input value={filterSearch} onChange={handleInputFilterChange}/>
+      </div>
+      <h2>Add a new</h2>
       <form>
         <div>
           name: <input value={newName} onChange={handleInputNameChange}/>
@@ -66,7 +86,7 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-        {
+        {/* {
           persons.map(
             ({name, number}) => (
               <p key={name}>
@@ -74,6 +94,11 @@ const App = () => {
               </p>
             )
           )
+        } */}
+        {
+          filtered.map(({name, number}) => <p key={name}>
+            <span>{name}</span> <span>{number}</span>
+          </p>)
         }
     </div>
   )
