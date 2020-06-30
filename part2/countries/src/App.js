@@ -10,6 +10,10 @@ function App() {
     setCountrySearch(event.target.value)
   }
 
+  const getCountryDetails = (country) => {
+    setCountrySearch(country)
+  }
+
   // fetches countries data
   const hook = () => {
     axios
@@ -64,6 +68,7 @@ function App() {
             filtered.map(obj => (
               <li key={obj.name}>
                 {obj.name}
+                <button onClick={() => getCountryDetails(obj.name)}>view more</button>
               </li>
             )) : 'Too many matches, specify another filter'
           }
