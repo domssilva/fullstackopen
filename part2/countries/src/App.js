@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from 'react';
+
 import axios from 'axios'
+import CountryData from './components/CountryData'
 
 function App() {
 
@@ -33,30 +35,8 @@ function App() {
     let results
 
     if (filtered.length === 1) {
-      console.log(filtered[0])
-
       results = (
-        <>
-          <div className="main">
-            <h2>{filtered[0].name}</h2>
-            <p>capital {filtered[0].capital}</p>
-            <p>population {filtered[0].population}</p>
-          </div>
-          <div className="extra">
-            <h5>languages</h5>
-            <ul>
-              {
-                filtered[0].languages.map(
-                  obj => <li key={obj.name}>{obj.name}</li>
-                )
-              }
-            </ul>
-            <img 
-              style={{ width: '120px', height: '120px' }}
-              src={filtered[0].flag} 
-              alt="flag"/>
-          </div>
-        </>
+        <CountryData data={filtered[0]}/>
       )
     } else {
       results = (
