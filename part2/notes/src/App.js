@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios'
 
+import noteService from './services/notes'
 import Note from './components/Note'
 
 const App = () => {
@@ -9,28 +10,27 @@ const App = () => {
   const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true)
 
+  useEffect(() => {
+    noteService
+    .getAll()
+    .then(response => {
+      setNotes(response.data)
+    })
+  }, [])
+
   const toggleImportance = id => {
-    const url = `http://localhost:3001/notes/${id}`
+
     const note = notes.find(n => n.id === id)
     const changedNote = {...note, important: !note.important} // '...note' creates a new object with copies of all the properties from the note object.
 
-    axios
-      .put(url, changedNote)
+    noteService
+      .update(id, changedNote)
       .then(response => {
         setNotes(notes.map(
-          note => note.id !== id ? note : response.data
-        ))
+          note => note.id !== id ? note : response.data)
+        )
       })
   }
-
-  useEffect(() => {
-    const eventHandler = response => {
-      setNotes(response.data)
-    }
-
-    const promise = axios.get('http://localhost:3001/notes')
-    promise.then(eventHandler)
-  }, [])
 
   const addNote = (event) => {
     event.preventDefault()
@@ -41,10 +41,10 @@ const App = () => {
       //id: notes.length + 1, // it's better to let the server generate ids for our resources
     }
 
-   axios
-    .post('http://localhost:3001/notes', noteObject)
+   noteService
+    .create(noteObject)
     .then(response => {
-      setNotes(notes.concat(response.data)) // important: concat does not change the component's original state, it creates a new copy of the list
+      setNotes(notes.concat(response.data))
       setNewNote('')
     })
   }
