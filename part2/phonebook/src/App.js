@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios'
 
+import manageNumbers from './services/manageNumbers'
+
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
@@ -11,6 +13,14 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [persons, setPersons] = useState([])
   const [filterSearch, setFilterSearch] = useState('')
+
+  useEffect(() => {
+    manageNumbers
+      .getAll()
+      .then(response => {
+        setPersons(response)
+      })
+  }, [])
 
   const handleInputNameChange = (event) => {
     const nameToAdd = event.target.value
@@ -44,30 +54,21 @@ const App = () => {
         number: newNumber,
       }
 
-      axios
-        .post('http://localhost:3001/persons', newPerson)
+      manageNumbers
+        .create(newPerson)
         .then(response => {
-          console.log(response)
-          setPersons(persons.concat(newPerson))
+          setPersons(persons.concat(response))
+          // update input value
+          setNewName('')
+          setNewNumber('')
         })
     }
 
-    // update input value
-    setNewName('')
-    setNewNumber('')
   }
 
   const handleInputFilterChange = (event) => {
     setFilterSearch(event.target.value)
   }
-
-  const hook = () => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => setPersons(response.data))
-  }
-
-  useEffect(hook, [])
 
   let filtered = persons.filter(obj => obj.name.toLowerCase().includes(filterSearch.toLowerCase()))
 

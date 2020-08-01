@@ -24,6 +24,16 @@
       "name": "Harry Potter",
       "number": "7129571257",
       "id": 5
+    },
+    {
+      "name": "Hermione Granger",
+      "number": "3907592385",
+      "id": 6
+    },
+    {
+      "name": "Ron Wisley",
+      "number": "895892386",
+      "id": 7
     }
   ]
 }
