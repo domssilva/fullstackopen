@@ -9,10 +9,22 @@ const App = () => {
   const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true)
 
-  useEffect(() => {
+  const toggleImportance = id => {
+    const url = `http://localhost:3001/notes/${id}`
+    const note = notes.find(n => n.id === id)
+    const changedNote = {...note, important: !note.important} // '...note' creates a new object with copies of all the properties from the note object.
 
+    axios
+      .put(url, changedNote)
+      .then(response => {
+        setNotes(notes.map(
+          note => note.id !== id ? note : response.data
+        ))
+      })
+  }
+
+  useEffect(() => {
     const eventHandler = response => {
-      console.log('promise fullfilled')
       setNotes(response.data)
     }
 
@@ -20,25 +32,24 @@ const App = () => {
     promise.then(eventHandler)
   }, [])
 
-  console.log(notes)
-
   const addNote = (event) => {
     event.preventDefault()
     const noteObject = {
       content: newNote,
       date: new Date().toISOString(),
       important: Math.random() < 0.5,
-      id: notes.length + 1,
+      //id: notes.length + 1, // it's better to let the server generate ids for our resources
     }
-    
-    setNotes(
-      notes.concat(noteObject)
-    )
-    setNewNote('')
+
+   axios
+    .post('http://localhost:3001/notes', noteObject)
+    .then(response => {
+      setNotes(notes.concat(response.data)) // important: concat does not change the component's original state, it creates a new copy of the list
+      setNewNote('')
+    })
   }
 
   const handleNoteChange = (event) => {
-    console.log(event.target)
     setNewNote(event.target.value)
   }
 
@@ -59,7 +70,7 @@ const App = () => {
       </div>
       <ul>
         {notesToShow.map((note) => 
-          <Note key={note.id} note={note} />
+          <Note key={note.id} note={note} toggleImportance={() => {toggleImportance(note.id)}}/>
         )}
       </ul>
       <form onSubmit={addNote}>
