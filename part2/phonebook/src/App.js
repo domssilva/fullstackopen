@@ -63,7 +63,25 @@ const App = () => {
           setNewNumber('')
         })
     }
+  }
 
+  const deletePerson = (id) => {
+    let removePerson = window.confirm(`Delete ${id}?`)
+
+    if (removePerson) {
+      manageNumbers
+        .remove(id)
+        .then(response => {
+          let updatedPersons = []
+          persons.map(personObj => {
+            if (personObj.id !== id) {
+              updatedPersons.push(personObj)
+            }
+          })
+
+          setPersons(updatedPersons)
+        })
+    }
   }
 
   const handleInputFilterChange = (event) => {
@@ -85,7 +103,7 @@ const App = () => {
         addPerson={addPerson}
       />
       <h2>Numbers</h2>
-        <Persons filtered={filtered}/>
+        <Persons filtered={filtered} deletePerson={deletePerson}/>
     </div>
   )
 }

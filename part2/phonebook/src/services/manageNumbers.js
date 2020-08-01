@@ -12,7 +12,15 @@ const create = (newPerson) => {
     return req.then(response => response.data)
 }
 
+const remove = (id) => {
+    const req = axios.delete(`${server}/${id}`)
+    return req.then(response => {
+        return response.data
+    })
+}
+
 export default {
     getAll,
     create,
+    remove,
 }
