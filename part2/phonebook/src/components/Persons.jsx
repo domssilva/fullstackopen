@@ -5,8 +5,7 @@ export default function Persons({filtered, deletePerson}) {
     <>
       {
         filtered.map(({name, number, id}) => (
-          <>
-            <div key={name}>
+            <div key={`${id}-${name}`}>
               <span>{name}</span> 
               <span style={{
                 marginLeft: '8px',
@@ -19,7 +18,6 @@ export default function Persons({filtered, deletePerson}) {
                 onClick={() => deletePerson(id)}  
               >delete</button>
             </div>
-          </>
         ))
       }
     </>

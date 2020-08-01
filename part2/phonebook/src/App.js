@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import axios from 'axios'
 
 import manageNumbers from './services/manageNumbers'
 
@@ -45,10 +44,29 @@ const App = () => {
     })
 
     if (nameIsRepeated) {
-      alert(`${newName} is already added to phonebook`)
-    } else {
-      // push new name to persons
+      
+      // 1. verify if number is the same
+      persons.map(personObj => {
+        if (personObj.name === newName) {
+          if (personObj.number === newNumber) {
+            alert(`${newName} already exists.`)
+          } else {
+            let updatedPerson = {
+              name: personObj.name,
+              number: newNumber,
+              id: personObj.id,
+            }
 
+            manageNumbers
+              .update(personObj.id, updatedPerson)
+              .then(returnedUpdatedPerson => {
+                setPersons(persons.map(p => p.id !== personObj.id ? p : returnedUpdatedPerson))
+              })
+          }
+        }
+      })
+      // update persons
+    } else {
       let newPerson = {
         name: newName,
         number: newNumber,
@@ -103,7 +121,10 @@ const App = () => {
         addPerson={addPerson}
       />
       <h2>Numbers</h2>
-        <Persons filtered={filtered} deletePerson={deletePerson}/>
+        <Persons 
+          filtered={filtered} 
+          deletePerson={deletePerson}
+        />
     </div>
   )
 }
