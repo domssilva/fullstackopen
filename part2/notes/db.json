@@ -10,7 +10,7 @@
       "id": 2,
       "content": "Browser can execute only Javascript",
       "date": "2019-05-30T18:39:34.091Z",
-      "important": false
+      "important": true
     },
     {
       "id": 3,
@@ -27,7 +27,7 @@
     {
       "content": "js rocks",
       "date": "2020-08-01T15:33:59.115Z",
-      "important": true,
+      "important": false,
       "id": 5
     },
     {
@@ -35,6 +35,24 @@
       "date": "2020-08-01T15:41:15.954Z",
       "important": true,
       "id": 6
+    },
+    {
+      "content": "hello world",
+      "date": "2020-08-01T16:32:58.110Z",
+      "important": false,
+      "id": 7
+    },
+    {
+      "content": "testing",
+      "date": "2020-08-01T18:02:45.056Z",
+      "important": true,
+      "id": 8
+    },
+    {
+      "content": "cool",
+      "date": "2020-08-01T18:04:19.418Z",
+      "important": false,
+      "id": 9
     }
   ]
 }
