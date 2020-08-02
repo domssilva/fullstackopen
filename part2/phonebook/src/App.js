@@ -98,7 +98,14 @@ const App = () => {
   }
 
   const deletePerson = (id) => {
-    let removePerson = window.confirm(`Delete ${id}?`)
+
+    let removePerson = false
+
+    persons.map(personObj => {
+      if (personObj.id === id) {
+        removePerson = window.confirm(`Delete ${personObj.name}?`)
+      }
+    })
 
     if (removePerson) {
       manageNumbers
