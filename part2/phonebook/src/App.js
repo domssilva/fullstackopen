@@ -5,6 +5,7 @@ import manageNumbers from './services/manageNumbers'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import Message from './components/Message'
 
 const App = () => {
 
@@ -12,6 +13,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [persons, setPersons] = useState([])
   const [filterSearch, setFilterSearch] = useState('')
+  const [message, setMessage] = useState(null)
 
   useEffect(() => {
     manageNumbers
@@ -60,7 +62,13 @@ const App = () => {
             manageNumbers
               .update(personObj.id, updatedPerson)
               .then(returnedUpdatedPerson => {
+                // updating existing person's number
                 setPersons(persons.map(p => p.id !== personObj.id ? p : returnedUpdatedPerson))
+                setMessage(`updated ${newName}.`)
+                setTimeout(() => {
+                  // make notification message disappear after 5s
+                  setMessage(null)
+                }, 5000)
               })
           }
         }
@@ -75,7 +83,13 @@ const App = () => {
       manageNumbers
         .create(newPerson)
         .then(response => {
+          // creating new person
           setPersons(persons.concat(response))
+          setMessage(`added ${newName}.`)
+          setTimeout(() => {
+            // make notification message disappear after 5s
+            setMessage(null)
+          }, 5000)
           // update input value
           setNewName('')
           setNewNumber('')
@@ -109,23 +123,26 @@ const App = () => {
   let filtered = persons.filter(obj => obj.name.toLowerCase().includes(filterSearch.toLowerCase()))
 
   return (
-    <div>
-      <h2>Phonebook</h2>
-        <Filter filterSearch={filterSearch} handleInputFilterChange={handleInputFilterChange}/>
-      <h2>Add a new</h2>
-      <PersonForm
-        newName={newName}
-        handleInputNameChange={handleInputNameChange}
-        newNumber={newNumber}
-        handleInputNumberChange={handleInputNumberChange}
-        addPerson={addPerson}
-      />
-      <h2>Numbers</h2>
-        <Persons 
-          filtered={filtered} 
-          deletePerson={deletePerson}
+    <>
+      <Message message={message}/>
+      <main>
+        <h2>Phonebook</h2>
+          <Filter filterSearch={filterSearch} handleInputFilterChange={handleInputFilterChange}/>
+        <h2>Add a new</h2>
+        <PersonForm
+          newName={newName}
+          handleInputNameChange={handleInputNameChange}
+          newNumber={newNumber}
+          handleInputNumberChange={handleInputNumberChange}
+          addPerson={addPerson}
         />
-    </div>
+        <h2>Numbers</h2>
+          <Persons 
+            filtered={filtered} 
+            deletePerson={deletePerson}
+          />
+      </main>
+    </>
   )
 }
 
