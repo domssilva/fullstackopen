@@ -33,6 +33,14 @@ const App = () => {
     setNewNumber(numberToAdd)
   }
 
+  const popUpNotification = (notification) => {
+    setMessage(notification)
+    setTimeout(() => {
+      // make notification message disappear after 5s
+      setMessage(null)
+    }, 5000)
+  }
+
   const addPerson = (event) => {
     // prevent default event (page reload)
     event.preventDefault()
@@ -64,11 +72,7 @@ const App = () => {
               .then(returnedUpdatedPerson => {
                 // updating existing person's number
                 setPersons(persons.map(p => p.id !== personObj.id ? p : returnedUpdatedPerson))
-                setMessage(`updated ${newName}.`)
-                setTimeout(() => {
-                  // make notification message disappear after 5s
-                  setMessage(null)
-                }, 5000)
+                popUpNotification(`updated ${newName}.`)
               })
           }
         }
@@ -85,11 +89,7 @@ const App = () => {
         .then(response => {
           // creating new person
           setPersons(persons.concat(response))
-          setMessage(`added ${newName}.`)
-          setTimeout(() => {
-            // make notification message disappear after 5s
-            setMessage(null)
-          }, 5000)
+          popUpNotification(`added ${newName}.`)
           // update input value
           setNewName('')
           setNewNumber('')
@@ -112,6 +112,9 @@ const App = () => {
           })
 
           setPersons(updatedPersons)
+        })
+        .catch(error => {
+          popUpNotification(`Information of ${id} has already been removed from server. Please refresh your page.`)
         })
     }
   }
