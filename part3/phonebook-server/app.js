@@ -7,24 +7,24 @@ const port = 3001;
 
 let phonebookData = [
     {
-    "name": "Hermione Granger",
-    "number": "39-07592385",
-    "id": 1
+        "name": "Hermione Granger",
+        "number": "39-07592385",
+        "id": 1
     },
     {
-    "name": "Ron Wisley",
-    "number": "89-34589236",
-    "id": 2
+        "name": "Ron Wisley",
+        "number": "89-34589236",
+        "id": 2
     },
     {
-    "name": "Harry Potter",
-    "number": "829-1095209",
-    "id": 3
+        "name": "Harry Potter",
+        "number": "829-1095209",
+        "id": 3
     },
     {
-    "name": "Severus Snape",
-    "number": "81-81095392",
-    "id": 4
+        "name": "Severus Snape",
+        "number": "81-81095392",
+        "id": 4
     }
 ];
 
@@ -68,24 +68,39 @@ app.post('/api/persons', (req, res) => {
     
     const body = req.body;
 
-    if (!body.name) {
+    // error handling: request is missing name or number
+    if (!body.name || !body.number) {
         return res.status(400).json({
-            error: 'contact data missing.'
+            error: 'contact data missing.',
         });
     }
+
+    // error handling: user adds a repeated name to the phonebook
+    let repeated = false;
+    phonebookData.map(contact => {
+        if (contact.name === body.name) {
+            repeated = true;
+        }
+    });
+
+    if (!repeated) {
+        // generate new contact
+        const newId = generateId();
+        const newContact = {
+            name: body.name,
+            number: body.number,
+            id: newId,
+        }
     
-    // generate new contact
-    const newId = generateId();
-    const newContact = {
-        name: body.name,
-        number: body.number,
-        id: newId,
+        // add new contact to phonebookData
+        phonebookData = phonebookData.concat(newContact);
+    
+        res.json(newContact);
+    } else {
+        res.status(400).json({
+            error: 'name must be unique.'
+        });
     }
-
-    // add new contact to phonebookData
-    phonebookData = phonebookData.concat(newContact);
-
-    res.json(newContact);
 });
 
 app.get('/info', (req, res) => {
