@@ -1,8 +1,11 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+
 const app = express();
+app.use(bodyParser.json());
 const port = 3001;
 
-const data = [
+const phonebookData = [
       {
         "name": "Hermione Granger",
         "number": "39-07592385",
@@ -26,11 +29,32 @@ const data = [
     ];
 
 app.get('/api/persons', (req, res) => {
-    res.send(data);
+    res.send(phonebookData);
+});
+
+app.get('/api/persons/:id', (req, res) => {
+    
+    const id = Number(req.params.id);
+    let phonebookIds = [];
+
+    // fetch single phonebook entry based on id
+    phonebookData.map(contact => {
+        phonebookIds.push(contact.id);
+
+        if (contact.id === id) {
+            res.send(contact);
+        }
+    });
+
+    // if id is not found, respond with appropriate status code
+    if (!phonebookIds.includes(id)) {
+        res.status(404).end();
+    }
+    
 });
 
 app.get('/info', (req, res) => {
-    res.send(`Phonebook has info for ${data.length} people <br><br> ${new Date()}`);
+    res.send(`Phonebook has info for ${phonebookData.length} people <br><br> ${new Date()}`);
 });
 
 app.listen(port, () => {
