@@ -5,7 +5,7 @@ const app = express();
 app.use(bodyParser.json());
 const port = 3001;
 
-const phonebookData = [
+let phonebookData = [
       {
         "name": "Hermione Granger",
         "number": "39-07592385",
@@ -51,6 +51,12 @@ app.get('/api/persons/:id', (req, res) => {
         res.status(404).end();
     }
     
+});
+
+app.delete('/api/persons/:id', (req, res) => {
+    const id = Number(req.params.id);
+    phonebookData = phonebookData.filter(contact => contact.id !== id);
+    res.status(204).end();
 });
 
 app.get('/info', (req, res) => {
