@@ -1,9 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const morgan = require('morgan');
 
-const app = express();
-app.use(bodyParser.json());
 const port = 3001;
+const app = express();
+app.use(morgan('tiny'));
+app.use(bodyParser.json());
 
 let phonebookData = [
     {
