@@ -1,10 +1,12 @@
 const express = require('express')
+const cors = require('cors')
 const app = express()
 
 // allows us to access body data
 app.use(express.json())
+app.use(cors())
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 
 let notes =  [
     {
