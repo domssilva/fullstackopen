@@ -7,6 +7,7 @@ const app = express()
 
 // db config
 const Note = require('./models/note')
+const { response } = require('express')
 
 // allows us to access body data
 app.use(express.json())
@@ -92,22 +93,17 @@ app.get('/', (req, res) => {
 })
 
 // get all notes
-app.get('/api/notes', (request, response) => {
+app.get('/api/notes', (req, res) => {
     Note.find({}).then(notes => {
-        response.json(notes)
+        res.json(notes)
     })
 })
 
 // get single note
 app.get('/api/notes/:id', (req, res) => {
-    const id = Number(req.params.id)
-    const note = notes.find(note => note.id === id)
-
-    if (note) {
+    Note.findById(req.params.id).then(note => {
         res.json(note)
-    } else {
-        res.status(404).end()
-    }
+    })
 })
 
 // remove note
@@ -128,16 +124,17 @@ app.post('/api/notes', (req, res) => {
         })
     }
 
-    const note = {
+    const note = new Note({
         content: body.content,
         important: body.important || false,
         date: new Date(),
-        id: generateId(),
-    }
+    })
 
-    notes = notes.concat(note)
-
-    res.json(note)
+    note
+        .save()
+        .then(savedNote => {
+            response.json(savedNote)
+        })
 })
 
 app.listen(PORT, () => {
