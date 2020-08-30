@@ -1,9 +1,12 @@
+require('dotenv').config();
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const cors = require('cors');
+const Persons = require('./models/person');
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT;
 const app = express();
 
 // server config
@@ -16,7 +19,7 @@ morgan.token('body', (req, res) => {
 });
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'));
 
-
+/*
 let phonebookData = [
     {
         "name": "Hermione Granger",
@@ -39,6 +42,7 @@ let phonebookData = [
         "id": 4
     }
 ];
+*/
 
 const generateId = () => {
     const maxId = phonebookData.length > 0 ? Math.max(...phonebookData.map(n => n.id)) : 0;
@@ -46,7 +50,13 @@ const generateId = () => {
 }
 
 app.get('/api/persons', (req, res) => {
-    res.send(phonebookData);
+    //res.send(phonebookData);
+    Persons
+        .find({})
+        .then(results => {
+            res.send(results);
+        })
+    
 });
 
 app.get('/api/persons/:id', (req, res) => {
