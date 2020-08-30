@@ -10,8 +10,9 @@ const Note = require('./models/note')
 const { response } = require('express')
 
 // allows us to access body data
-app.use(express.json())
 app.use(cors())
+app.use(express.json())
+app.use(express.static('build'))
 
 const PORT = process.env.PORT
 
@@ -88,10 +89,6 @@ const generateId = () => {
 ///////////////////////////////////////////
 // ROUTES
 
-app.get('/', (req, res) => {
-    res.send('<h1>Hello World!</h1>')
-})
-
 // get all notes
 app.get('/api/notes', (req, res) => {
     Note.find({}).then(notes => {
@@ -133,7 +130,7 @@ app.post('/api/notes', (req, res) => {
     note
         .save()
         .then(savedNote => {
-            response.json(savedNote)
+            res.json(savedNote)
         })
 })
 
