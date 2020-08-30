@@ -3,12 +3,13 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const cors = require('cors');
 
-const port = 3001;
+const PORT = process.env.PORT || 3001;
 const app = express();
 
 // server config
-app.use(bodyParser.json());
 app.use(cors());
+app.use(express.static('build'))
+app.use(bodyParser.json());
 
 morgan.token('body', (req, res) => {
     return JSON.stringify(req.body);
@@ -29,7 +30,7 @@ let phonebookData = [
     },
     {
         "name": "Harry Potter",
-        "number": "829-1095209",
+        "number": "2803940239",
         "id": 3
     },
     {
@@ -118,6 +119,6 @@ app.get('/info', (req, res) => {
     res.send(`Phonebook has info for ${phonebookData.length} people <br><br> ${new Date()}`);
 });
 
-app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });
