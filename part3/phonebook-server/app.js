@@ -97,32 +97,16 @@ app.post('/api/persons', (req, res) => {
         });
     }
 
-    // error handling: user adds a repeated name to the phonebook
-    let repeated = false;
-    phonebookData.map(contact => {
-        if (contact.name === body.name) {
-            repeated = true;
-        }
+    const contact = new Persons({
+        name: body.name,
+        number: body.number,
     });
 
-    if (!repeated) {
-        // generate new contact
-        const newId = generateId();
-        const newContact = {
-            name: body.name,
-            number: body.number,
-            id: newId,
-        }
-    
-        // add new contact to phonebookData
-        phonebookData = phonebookData.concat(newContact);
-    
-        res.json(newContact);
-    } else {
-        res.status(400).json({
-            error: 'name must be unique.'
+    contact
+        .save()
+        .then(savedContact => {
+            res.json(savedContact);
         });
-    }
 });
 
 app.get('/info', (req, res) => {
