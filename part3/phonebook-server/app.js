@@ -75,22 +75,15 @@ app.get('/api/persons', (req, res) => {
 
 app.get('/api/persons/:id', (req, res) => {
     
-    const id = Number(req.params.id);
-    let phonebookIds = [];
+    const id = req.params.id;
 
     // fetch single phonebook entry based on id
-    phonebookData.map(contact => {
-        phonebookIds.push(contact.id);
-
-        if (contact.id === id) {
-            res.send(contact);
-        }
-    });
-
-    // if id is not found, respond with appropriate status code
-    if (!phonebookIds.includes(id)) {
-        res.status(404).end();
-    }
+    Persons
+        .findById(id)
+        .then(personFound => {
+            res.send(personFound);
+        })
+        .catch(error => next(error));
 });
 
 app.delete('/api/persons/:id', (req, res, next) => {
