@@ -1,10 +1,12 @@
 import React from 'react'
 
-const Message = ({ message }) => {
+const Message = ({ message, red }) => {
+
+    console.log(red);
 
     const css = {
-        border: '3px solid green',
-        color: 'green',
+        border: `3px solid ${red ? 'red' : 'green'}`,
+        color: `${red ? 'red' : 'green'}`,
         fontSize: '16px',
         backgroundColor: '#bbbbbb',
         margin: '1rem 2rem',

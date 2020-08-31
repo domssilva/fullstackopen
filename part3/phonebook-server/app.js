@@ -118,9 +118,8 @@ app.post('/api/persons', (req, res) => {
             res.json(savedContact);
         })
         .catch(err => {
-            console.log(err.message);
             res.status(400).json({
-                error: 'duplicated name',
+                error: err.message,
             });
         });
 });

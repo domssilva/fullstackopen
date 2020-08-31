@@ -19,11 +19,13 @@ const personSchema = new mongoose.Schema({
   name: {
     type: String,
     unique: true,
+    minlength: [3, 'name should have more than 3 characters.'],
     required: true,
   },
   number: {
     type: String,
     unique: false,
+    minlength: [8, 'number must have at least 8 digits.'],
     required: true,
   },
 });

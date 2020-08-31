@@ -14,6 +14,7 @@ const App = () => {
   const [persons, setPersons] = useState([])
   const [filterSearch, setFilterSearch] = useState('')
   const [message, setMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(false)
 
   useEffect(() => {
     manageNumbers
@@ -38,6 +39,7 @@ const App = () => {
     setTimeout(() => {
       // make notification message disappear after 5s
       setMessage(null)
+      setErrorMessage(false)
     }, 5000)
   }
 
@@ -59,7 +61,8 @@ const App = () => {
       persons.map(personObj => {
         if (personObj.name === newName) {
           if (personObj.number === newNumber) {
-            alert(`${newName} already exists.`)
+            setErrorMessage(true);
+            popUpNotification(`${newName} is taken.`)
           } else {
             let updatedPerson = {
               name: personObj.name,
@@ -93,6 +96,11 @@ const App = () => {
           // update input value
           setNewName('')
           setNewNumber('')
+        })
+        .catch(error => {
+          const serverErrorMessage = error.response.data.error
+          setErrorMessage(true)
+          popUpNotification(serverErrorMessage) 
         })
     }
   }
@@ -134,7 +142,7 @@ const App = () => {
 
   return (
     <>
-      <Message message={message}/>
+      <Message message={message} red={errorMessage}/>
       <main>
         <h2>Phonebook</h2>
           <Filter filterSearch={filterSearch} handleInputFilterChange={handleInputFilterChange}/>
