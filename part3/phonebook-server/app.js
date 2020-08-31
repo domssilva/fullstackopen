@@ -10,9 +10,23 @@ const PORT = process.env.PORT;
 const app = express();
 
 // server config
-app.use(cors());
-app.use(express.static('build'))
+app.use(express.static('build'));
 app.use(bodyParser.json());
+app.use(cors());
+
+const errorHandler = (error, req, res, next) => {
+    console.error(error.message);
+
+    if (error.name === 'CastError') {
+        return res.status(400).send({
+            error: 'malformatted id',
+        });
+    } 
+
+    next(error);
+}
+
+app.use(errorHandler);
 
 morgan.token('body', (req, res) => {
     return JSON.stringify(req.body);
