@@ -93,7 +93,6 @@ app.get('/api/persons/:id', (req, res) => {
     }
 });
 
-
 app.delete('/api/persons/:id', (req, res, next) => {
     const id = req.params.id;
     Persons
@@ -125,6 +124,19 @@ app.post('/api/persons', (req, res) => {
         .then(savedContact => {
             res.json(savedContact);
         });
+});
+
+app.put('/api/persons/:id', (req, res, next) => {
+    const body = req.body;
+    const person = {
+        name: body.name,
+        number: body.number,
+    }
+
+    Persons
+        .findByIdAndUpdate(body.id, person, {new: true})
+        .then(newPerson => res.json(newPerson.toJSON()))
+        .catch(error => next(error));
 });
 
 app.get('/info', (req, res) => {
