@@ -6,16 +6,8 @@ const cors = require('cors')
 const app = express()
 const Note = require('./models/note')
 const { response } = require('express')
-
-const PORT = process.env.PORT
-
-const requestLogger = (request, response, next) => {
-  console.log('--------------------')
-  console.log(`${request.method} ${request.path}`)
-  console.log('Body: ', request.body)
-  console.log('--------------------')
-  next()
-}
+const { PORT } = require('./utils/config')
+const logger = require('./utils/logger')
 
 const errorHandler = (error, request, response, next) => {
   console.error(error.message)
@@ -35,7 +27,6 @@ const errorHandler = (error, request, response, next) => {
 app.use(cors())
 app.use(express.static('build'))
 app.use(express.json())
-app.use(requestLogger)
 app.use(errorHandler)
 
 const unknownEndpoint = (request, response) => {
@@ -95,5 +86,5 @@ app.use(unknownEndpoint)
 
 // start server
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
+  logger.info(`Server running on port ${PORT}`)
 })
