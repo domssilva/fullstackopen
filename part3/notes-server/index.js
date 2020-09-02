@@ -91,6 +91,22 @@ app.post('/api/notes', (req, res, next) => {
     .catch(error => next(error))
 })
 
+// update if is important
+app.put('/:id', (request, response, next) => {
+  const body = request.body
+
+  const note = {
+    content: body.content,
+    important: body.important,
+  }
+
+  Note.findByIdAndUpdate(request.params.id, note, { new: true })
+    .then(updatedNote => {
+      response.json(updatedNote)
+    })
+    .catch(error => next(error))
+})
+
 app.use(unknownEndpoint)
 
 // start server
