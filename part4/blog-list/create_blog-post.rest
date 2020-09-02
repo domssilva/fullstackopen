@@ -1,0 +1,9 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+    "title":"I want to learn how to program!",
+    "author":"Draco Malfoy",
+    "url":"https://fullstackopen.com/",
+    "likes":50
+}
