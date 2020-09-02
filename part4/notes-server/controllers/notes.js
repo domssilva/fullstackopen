@@ -47,4 +47,20 @@ notesRouter.post('/', (req, res, next) => {
     .catch(error => next(error))
 })
 
+// update if is important
+notesRouter.put('/:id', (request, response, next) => {
+  const body = request.body
+
+  const note = {
+    content: body.content,
+    important: body.important,
+  }
+
+  Note.findByIdAndUpdate(request.params.id, note, { new: true })
+    .then(updatedNote => {
+      response.json(updatedNote)
+    })
+    .catch(error => next(error))
+})
+
 module.exports = notesRouter
