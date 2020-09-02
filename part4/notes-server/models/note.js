@@ -1,6 +1,8 @@
 const { MONGO_URI } = require('../utils/config')
 const mongoose = require('mongoose')
 
+mongoose.set('useFindAndModify', false);
+
 mongoose.connect(MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
