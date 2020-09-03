@@ -5,6 +5,6 @@ const { PORT } = require('./utils/config')
 
 const server = http.createServer(app)
 
-server.listen(https::bywear.vercel.app/PORT, () => {
+server.listen(PORT, () => {
   logger.info(`Server running on port ${PORT}`)
 })
